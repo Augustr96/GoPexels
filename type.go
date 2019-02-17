@@ -1,4 +1,4 @@
-package pexels
+package GoPexels
 
 // result of search photos
 type SearchResult struct {

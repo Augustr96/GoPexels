@@ -1,4 +1,4 @@
-package pexels
+package GoPexels
 
 import (
 	"encoding/json"
