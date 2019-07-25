@@ -1,1 +1,1 @@
-package GoPexels
+package gopexels

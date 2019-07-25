@@ -1,4 +1,4 @@
-package GoPexels
+package gopexels
 
 import (
 	"encoding/json"
@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -17,6 +18,7 @@ const (
 type Client struct {
 	Token string
 	hc    http.Client
+	RemainingTimes int32
 }
 
 func NewClient(token string) *Client {
@@ -24,7 +26,7 @@ func NewClient(token string) *Client {
 	return &Client{Token: token, hc: c}
 }
 
-// search photos
+// SearchPhotos
 // query: Get photos related to this query. (required)
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
@@ -42,7 +44,7 @@ func (c *Client) SearchPhotos(query string, perPage, page int) ( *SearchResult, 
 	return &result, err
 }
 
-// get trending photos
+// CuratedPhotos get trending photos
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
 func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult, error) {
@@ -63,7 +65,7 @@ func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult, error) {
 	return &resutl, err
 }
 
-// get a photo
+// GetPhoto
 // id: Defines the photo id
 func (c *Client) GetPhoto(id int32) (*Photo, error) {
 	url := fmt.Sprintf(PhotoApi + "/photos/%d", id)
@@ -79,7 +81,7 @@ func (c *Client) GetPhoto(id int32) (*Photo, error) {
 	return &result, err
 }
 
-// get a random photo
+// GetRandomPhoto get a random photo
 func (c *Client) GetRandomPhoto() (*Photo, error) {
 	rand.Seed(time.Now().Unix())
 	randNum := rand.Intn(1001)
@@ -90,7 +92,7 @@ func (c *Client) GetRandomPhoto() (*Photo, error) {
 	return nil, err
 }
 
-// search videos
+// SearchVideo search videos
 // query: Get videos related to this query. (required)
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
@@ -112,7 +114,7 @@ func (c *Client) SearchVideo(query string, perPage, page int) (*VideoSearchResul
 	return &result, err
 }
 
-// get popular videos
+// PopularVideo get popular videos
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
 func (c *Client) PopularVideo(perPage, page int) (*PopularVideos, error) {
@@ -133,7 +135,7 @@ func (c *Client) PopularVideo(perPage, page int) (*PopularVideos, error) {
 	return &result, err
 }
 
-// get a random video
+// GetRandomVideo get a random video
 func (c *Client) GetRandomVideo() (*Video, error) {
 	rand.Seed(time.Now().Unix())
 	randNum := rand.Intn(1001)
@@ -144,11 +146,27 @@ func (c *Client) GetRandomVideo() (*Video, error) {
 	return nil, err
 }
 
+// GetRemainRequestInThisMonth get the times of request in this month
+func (c *Client) GetRemainRequestInThisMonth() int32 {
+	return c.RemainingTimes
+}
+
+// requestDoWithAuth do http requests with token
 func (c *Client) requestDoWithAuth(method, url string) (*http.Response, error) {
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("Authorization", c.Token)
-	return c.hc.Do(req)
+	resp, err := c.hc.Do(req)
+	if err != nil {
+		return resp, err
+	}
+	times, err := strconv.Atoi(resp.Header.Get("X-Ratelimit-Remaining"))
+	if err != nil {
+		return resp, nil
+	} else {
+		c.RemainingTimes = int32(times)
+	}
+	return resp, nil
 }

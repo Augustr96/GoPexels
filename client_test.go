@@ -1,4 +1,4 @@
-package GoPexels
+package gopexels
 
 import (
 	"os"
