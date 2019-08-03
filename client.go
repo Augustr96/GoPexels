@@ -16,8 +16,8 @@ const (
 )
 
 type Client struct {
-	Token string
-	hc    http.Client
+	Token          string
+	hc             http.Client
 	RemainingTimes int32
 }
 
@@ -30,14 +30,14 @@ func NewClient(token string) *Client {
 // query: Get photos related to this query. (required)
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
-func (c *Client) SearchPhotos(query string, perPage, page int) ( *SearchResult, error){
-	url := fmt.Sprintf(PhotoApi + "/search?query=%s&per_page=%d&page=%d", query, perPage, page)
+func (c *Client) SearchPhotos(query string, perPage, page int) (*SearchResult, error) {
+	url := fmt.Sprintf(PhotoApi+"/search?query=%s&per_page=%d&page=%d", query, perPage, page)
 	resp, err := c.requestDoWithAuth("GET", url)
 	defer resp.Body.Close()
 
 	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil ,err
+		return nil, err
 	}
 	var result SearchResult
 	err = json.Unmarshal(data, &result)
@@ -48,14 +48,14 @@ func (c *Client) SearchPhotos(query string, perPage, page int) ( *SearchResult, 
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
 func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult, error) {
-	url := fmt.Sprintf(PhotoApi + "/curated?per_page=%d&page=%d", perPage, page)
-	resp , err := c.requestDoWithAuth("GET", url)
+	url := fmt.Sprintf(PhotoApi+"/curated?per_page=%d&page=%d", perPage, page)
+	resp, err := c.requestDoWithAuth("GET", url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	data, err  := ioutil.ReadAll(resp.Body)
+	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *Client) CuratedPhotos(perPage, page int) (*CuratedResult, error) {
 // GetPhoto
 // id: Defines the photo id
 func (c *Client) GetPhoto(id int32) (*Photo, error) {
-	url := fmt.Sprintf(PhotoApi + "/photos/%d", id)
+	url := fmt.Sprintf(PhotoApi+"/photos/%d", id)
 	resp, err := c.requestDoWithAuth("GET", url)
 	if err != nil {
 		return nil, err
@@ -97,7 +97,7 @@ func (c *Client) GetRandomPhoto() (*Photo, error) {
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
 func (c *Client) SearchVideo(query string, perPage, page int) (*VideoSearchResult, error) {
-	url := fmt.Sprintf(VideoApi + "/search?query=%s&per_page=%d&page=%d", query, perPage, page)
+	url := fmt.Sprintf(VideoApi+"/search?query=%s&per_page=%d&page=%d", query, perPage, page)
 	resp, err := c.requestDoWithAuth("GET", url)
 	if err != nil {
 		return nil, err
@@ -118,14 +118,14 @@ func (c *Client) SearchVideo(query string, perPage, page int) (*VideoSearchResul
 // per_page: Defines the number of results per page. (optional, default: 15, max: 80)
 // page: Defines the number of the page. (optional, default: 1)
 func (c *Client) PopularVideo(perPage, page int) (*PopularVideos, error) {
-	url := fmt.Sprintf(VideoApi + "/popular?per_page=%d&page=%d", perPage, page)
+	url := fmt.Sprintf(VideoApi+"/popular?per_page=%d&page=%d", perPage, page)
 	resp, err := c.requestDoWithAuth("GET", url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
 
-	data ,err := ioutil.ReadAll(resp.Body)
+	data, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}

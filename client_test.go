@@ -24,7 +24,7 @@ func TestClient_CuratedPhotos(t *testing.T) {
 	if err != nil {
 		t.Fatalf("get curatedPhotos error: %v", err)
 	}
-	if result.Page ==  0 {
+	if result.Page == 0 {
 		t.Fatal("curated photo content wrong")
 	}
 }

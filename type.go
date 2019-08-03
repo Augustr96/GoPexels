@@ -2,26 +2,26 @@ package gopexels
 
 // result of search photos
 type SearchResult struct {
-	Page         float64 `json:"page"`
-	PerPage      float64 `json:"per_page"`
-	TotalResults float64 `json:"total_results"`
+	Page         int32   `json:"page"`
+	PerPage      int32   `json:"per_page"`
+	TotalResults int32   `json:"total_results"`
 	NextPage     string  `json:"next_page"`
 	Photos       []Photo `json:"photos"`
 }
 
 // trending photos
 type CuratedResult struct {
-	Page     float64 `json:"page"`
-	PerPage  float64 `json:"per_page"`
+	Page     int32   `json:"page"`
+	PerPage  int32   `json:"per_page"`
 	NextPage string  `json:"next_page"`
 	Photos   []Photo `json:"photos"`
 }
 
 // photo detail
 type Photo struct {
-	Id              float64     `json:"id"`
-	Width           float64     `json:"width"`
-	Height          float64     `json:"height"`
+	Id              int32       `json:"id"`
+	Width           int32       `json:"width"`
+	Height          int32       `json:"height"`
 	Url             string      `json:"url"`
 	Photographer    string      `json:"photographer"`
 	PhotographerUrl string      `json:"photographer_url"`
@@ -43,18 +43,18 @@ type PhotoSource struct {
 
 // result of search video
 type VideoSearchResult struct {
-	Page         float64 `json:"page"`
-	PerPage      float64 `json:"per_page"`
-	TotalResults float64 `json:"total_results"`
+	Page         int32   `json:"page"`
+	PerPage      int32   `json:"per_page"`
+	TotalResults int32   `json:"total_results"`
 	NextPage     string  `json:"next_page"`
 	Videos       []Video `json:"videos"`
 }
 
 // video detail
 type Video struct {
-	Id            float64         `json:"id"`
-	Width         float64         `json:"width"`
-	Height        float64         `json:"height"`
+	Id            int32           `json:"id"`
+	Width         int32           `json:"width"`
+	Height        int32           `json:"height"`
 	Url           string          `json:"url"`
 	Image         string          `json:"image"`
 	FullRes       interface{}     `json:"full_res"` // fixme use?
@@ -65,26 +65,26 @@ type Video struct {
 
 // video source
 type VideoFiles struct {
-	Id       float64 `json:"id"`
-	Quality  string  `json:"quality"`
-	FileType string  `json:"file_type"`
-	Width    float64 `json:"width"`
-	Height   float64 `json:"height"`
-	Link     string  `json:"link"`
+	Id       int32  `json:"id"`
+	Quality  string `json:"quality"`
+	FileType string `json:"file_type"`
+	Width    int32  `json:"width"`
+	Height   int32  `json:"height"`
+	Link     string `json:"link"`
 }
 
 // video Schematic diagram
 type VideoPictures struct {
-	Id      float64 `json:"id"`
-	Picture string  `json:"picture"`
-	Nr      float64 `json:"nr"`
+	Id      int32  `json:"id"`
+	Picture string `json:"picture"`
+	Nr      int32  `json:"nr"`
 }
 
 // popular photos
 type PopularVideos struct {
-	Page         float64 `json:"page"`
-	PerPage      float64 `json:"per_page"`
-	TotalResults float64 `json:"total_results"`
+	Page         int32   `json:"page"`
+	PerPage      int32   `json:"per_page"`
+	TotalResults int32   `json:"total_results"`
 	Url          string  `json:"url"`
 	Videos       []Video `json:"videos"`
 }
